@@ -1,1 +1,1 @@
-Download the ArcRaidersTracker.html et run it on your browser.
+Download the ArcRaidersTracker.html et run it in your browser.
