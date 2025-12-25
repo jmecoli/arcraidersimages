@@ -19,73 +19,22 @@
   <script>
     const questItems = [
       { name: 'Power Rod', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Power_Rod.png?raw=true' },
-      { name: 'Rocketeer Driver', required: 1, img: $RocketeerDriver },
-      { name: 'Leaper Pulse Unit', required: 1, img: $LeaperPulseUnit },
-      { name: 'Hornet Driver', required: 2, img: $HornetDriver },
+      { name: 'Rocketeer Driver', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Rocketeer_Driver.png?raw=true' },
+      { name: 'Leaper Pulse Unit', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Leaper_Pulse_Unit.png?raw=true' },
+      { name: 'Hornet Driver', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Hornet_Driver.png?raw=true' },
       { name: 'Surveyor Vault', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Surveyor_Vault.png?raw=true' },
-      { name: 'Wasp Driver', required: 2, img: $WaspDriver },
-      { name: 'Antiseptic', required: 2, img: $Antiseptic },
+      { name: 'Wasp Driver', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Wasp_Driver.png?raw=true' },
+      { name: 'Antiseptic', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Antiseptic.png.webp?raw=true' },
       { name: 'Water Pump', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Water_Pump.png?raw=true' },
       { name: 'Syringe', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Syringe.png?raw=true' },
-      { name: 'Snitch Scanner', required: 2, img: $SnitchScanner },
+      { name: 'Snitch Scanner', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Snitch_Scanner.png?raw=true' },
       { name: 'Fertilizer', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Fertilizer.png?raw=true' },
-      { name: 'Durable Cloth', required: 1, img: $DurableCloth },
+      { name: 'Durable Cloth', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Durable_Cloth.png?raw=true' },
       { name: 'Great Mullein', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Great_Mullein.png?raw=true' },
       { name: 'Battery', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Battery.png?raw=true' },
-      { name: 'ARC Alloy', required: 3, img: $ARCAlloy },
+      { name: 'ARC Alloy', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/ARC_Alloy.png?raw=true' },
       { name: 'Wires', required: 11, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Wires.png?raw=true' }
     ];
-    
-    $MetalParts = 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Metal_Parts.png.webp?raw=true'
-    $RubberParts = 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Rubber_Parts.png.webp?raw=true'
-    $RustedTools = 'https://github.com/jmecoli/arcraidersimages/blob/main/Rusted_Tools.png?raw=true'
-    $MechanicalComponents = 'https://github.com/jmecoli/arcraidersimages/blob/main/Mechanical_Components.png?raw=true'
-    $WaspDriver = 'https://github.com/jmecoli/arcraidersimages/blob/main/Wasp_Driver.png?raw=true'
-    $RustedGear = 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Rusted_Gear.png?raw=true'
-    $AdvancedMechanicalComponents = 'https://github.com/jmecoli/arcraidersimages/blob/main/Advanced_Mechanical_Components.png?raw=true'
-    $SentinelFiringCore = 'https://github.com/jmecoli/arcraidersimages/blob/main/Sentinel_Firing_Core.png?raw=true'
-    $PlasticParts = 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Fabric.png.webp?raw=true'
-    $Fabric = 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Fabric.png.webp?raw=true'
-    $PowerCable = 'https://github.com/jmecoli/arcraidersimages/blob/main/Power_Cable.png?raw=true'
-    $ElectricalComponents = 'https://github.com/jmecoli/arcraidersimages/blob/main/Electrical_Components.png?raw=true'
-    $HornetDriver = 'https://github.com/jmecoli/arcraidersimages/blob/main/Hornet_Driver.png?raw=true'
-    $IndustrialBattery = 'https://github.com/jmecoli/arcraidersimages/blob/main/Industrial_Battery.png?raw=true'
-    $AdvancedElectricalComponents = 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Advanced_Electrical_Components.png.webp?raw=true'
-    $BastionCell = 'https://github.com/jmecoli/arcraidersimages/blob/main/Bastion_Cell.png?raw=true'
-    $ARCAlloy = 'https://github.com/jmecoli/arcraidersimages/blob/main/ARC_Alloy.png?raw=true'
-    $CrackedBioscanner = 'https://github.com/jmecoli/arcraidersimages/blob/main/Cracked_Bioscanner.png?raw=true'
-    $DurableCloth = 'https://github.com/jmecoli/arcraidersimages/blob/main/Durable_Cloth.png?raw=true'
-    $TickPod = 'https://github.com/jmecoli/arcraidersimages/blob/main/Tick_Pod.png?raw=true'
-    $RustedShutMedicalKit = 'https://github.com/jmecoli/arcraidersimages/blob/main/Rusted_Shut_Medical_Kit.png?raw=true'
-    $Antiseptic = 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Antiseptic.png.webp?raw=true'
-    $SurveyorVault = 'https://github.com/jmecoli/arcraidersimages/blob/main/Surveyor_Vault.png?raw=true'
-    $Chemicals= 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Chemicals.png.webp?raw=true'
-    $SynthesizedFuel = 'https://github.com/jmecoli/arcraidersimages/blob/main/Synthesized_Fuel.png?raw=true'
-    $CrudeExplosives = 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Crude_Explosives.png.webp?raw=true'
-    $PopTrigger = 'https://github.com/jmecoli/arcraidersimages/blob/main/Pop_Trigger.png?raw=true' 
-    $LaboratoryReagents = 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Laboratory_Reagents.png.webp?raw=true'
-    $ExplosiveCompound = 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Explosive_Compound.png.webp?raw=true'
-    $RocketeerDriver = 'https://github.com/jmecoli/arcraidersimages/blob/main/Rocketeer_Driver.png?raw=true'
-    $DamagedHeatSink = 'https://github.com/jmecoli/arcraidersimages/blob/main/Damaged_Heat_Sink.png?raw=true'
-    $SnitchScanner = 'https://github.com/jmecoli/arcraidersimages/blob/main/Snitch_Scanner.png?raw=true'
-    $FriedMotherboard = 'https://github.com/jmecoli/arcraidersimages/blob/main/Fried_Motherboard.png?raw=true'
-    $LeaperPulseUnit = 'https://github.com/jmecoli/arcraidersimages/blob/main/Leaper_Pulse_Unit.png?raw=true'
-    $ARCPowercell = 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-ARC_Powercell.png.webp?raw=true'
-    $Toaster = 'https://raw.githubusercontent.com/jmecoli/arcraidersimages/main/e1ywoh06.png'
-    $ARCMotionCore = 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-ARC_Motion_Core.png.webp?raw=true'
-    $FireballBurner = 'https://github.com/jmecoli/arcraidersimages/blob/main/Fireball_Burner.png?raw=true'
-    $Motor = 'https://github.com/jmecoli/arcraidersimages/blob/main/Motor.png?raw=true'
-    $ARCCircuitry = 'https://github.com/jmecoli/arcraidersimages/blob/main/ARC_Circuitry.png?raw=true'
-    $BombardierCell = 'https://github.com/jmecoli/arcraidersimages/blob/main/Bombardier_Cell.png?raw=true'
-    $DogCollar = 'https://github.com/jmecoli/arcraidersimages/blob/main/Dog_Collar.png?raw=true'
-    $lemon = 'https://github.com/jmecoli/arcraidersimages/blob/main/Lemon.png?raw=true'
-    $apricot = 'https://github.com/jmecoli/arcraidersimages/blob/main/Apricot.png?raw=true'
-    $PricklyPear = 'https://github.com/jmecoli/arcraidersimages/blob/main/Prickly_Pear.png?raw=true'
-    $Olives = 'https://github.com/jmecoli/arcraidersimages/blob/main/Olives.png?raw=true'
-    $Catbed = 'https://github.com/jmecoli/arcraidersimages/blob/main/Cat_Bed.png?raw=true'
-    $Mushroom = 'https://github.com/jmecoli/arcraidersimages/blob/main/Mushroom.png?raw=true'
-    $VeryComfortablePillow = 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Very_Comfortable_Pillow.png.webp?raw=true'
-
 
     const workshops = {
       gunsmith: {
@@ -93,19 +42,19 @@
         icon: '🔧',
         levels: [
            [
-            { name: 'Metal Parts', required: 20, img: $MetalParts },
-            { name: 'Rubber Parts', required: 30, img: $RubberParts },
+            { name: 'Metal Parts', required: 20, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Metal_Parts.png.webp?raw=true' },
+            { name: 'Rubber Parts', required: 30, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Rubber_Parts.png.webp?raw=true' },
             
           ],
           [
-            { name: 'Rusted Tools', required: 3, img: $RustedTools },
-            { name: 'Mechanical Components', required: 5, img: $MechanicalComponents  },
-            { name: 'Wasp Driver', required: 8, img: $WaspDriver  }
+            { name: 'Rusted Tools', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Rusted_Tools.png?raw=true' },
+            { name: 'Mechanical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Mechanical_Components.png?raw=true' },
+            { name: 'Wasp Driver', required: 8, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Wasp_Driver.png?raw=true' }
           ],
           [
-            { name: 'Rusted Gear', required: 3, img: $RustedGear  },
-            { name: 'Advanced Mechanical Components', required: 5, img: $AdvancedMechanicalComponents },
-            { name: 'Sentinel Firing Core', required: 4, img: $SentinelFiringCore  }
+            { name: 'Rusted Gear', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Rusted_Gear.png?raw=true' },
+            { name: 'Advanced Mechanical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Advanced_Mechanical_Components.png?raw=true' },
+            { name: 'Sentinel Firing Core', required: 4, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Sentinel_Firing_Core.png?raw=true' }
           ]
         ]
       },
@@ -114,19 +63,19 @@
         icon: '🛡️',
         levels: [
           [
-            { name: 'Plastic Parts', required: 25, img: $PlasticParts  },
-            { name: 'Fabric', required: 30, img: $Fabric },
+            { name: 'Plastic Parts', required: 25, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Fabric.png.webp?raw=true' },
+            { name: 'Fabric', required: 30, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Fabric.png.webp?raw=true' },
             
           ],
           [
-            { name: 'Power Cable', required: 3, img: $PowerCable  },
-            { name: 'Electrical Components', required: 5, img: $ElectricalComponents },
-            { name: 'Hornet Driver', required: 5, img: $HornetDriver  }
+            { name: 'Power Cable', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Power_Cable.png?raw=true' },
+            { name: 'Electrical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Electrical_Components.png?raw=true' },
+            { name: 'Hornet Driver', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Hornet_Driver.png?raw=true' }
           ],
           [
-            { name: 'Industrial Battery', required: 3, img: $IndustrialBattery },
-            { name: 'Advanced Electrical Components', required: 5, img: $AdvancedElectricalComponents },
-            { name: 'Bastion Cell', required: 6, img: $BastionCell }
+            { name: 'Industrial Battery', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Industrial_Battery.png?raw=true' },
+            { name: 'Advanced Electrical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Advanced_Electrical_Components.png.webp?raw=true' },
+            { name: 'Bastion Cell', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Bastion_Cell.png?raw=true' }
           ]
         ]
       },
@@ -135,19 +84,19 @@
         icon: '🏥',
         levels: [
           [
-            { name: 'Fabric', required: 50, img: $Fabric },
-            { name: 'ARC Alloy', required: 6, img: $ARCAlloy },
+            { name: 'Fabric', required: 50, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Fabric.png.webp?raw=true' },
+            { name: 'ARC Alloy', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/ARC_Alloy.png?raw=true' },
             
           ],
           [
-            { name: 'Cracked Bioscanner', required: 2, img: $CrackedBioscanner },
-            { name: 'Durable Cloth', required: 5, img: $DurableCloth },
-            { name: 'Tick Pod', required: 8, img: $TickPod }
+            { name: 'Cracked Bioscanner', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Cracked_Bioscanner.png?raw=true' },
+            { name: 'Durable Cloth', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Durable_Cloth.png?raw=true' },
+            { name: 'Tick Pod', required: 8, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Tick_Pod.png?raw=true' }
           ],
           [
-            { name: 'Rusted Shut Medical Kit', required: 3, img: $RustedShutMedicalKit },
-            { name: 'Antiseptic', required: 8, img: $Antiseptic  },
-            { name: 'Surveyor Vault', required: 5, img: $SurveyorVault }
+            { name: 'Rusted Shut Medical Kit', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Rusted_Shut_Medical_Kit.png?raw=true' },
+            { name: 'Antiseptic', required: 8, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Antiseptic.png.webp?raw=true' },
+            { name: 'Surveyor Vault', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Surveyor_Vault.png?raw=true' }
           ]
         ]
       },
@@ -156,19 +105,19 @@
         icon: '💣',
         levels: [
           [
-            { name: 'Chemicals', required: 50, img: $Chemicals  },
-            { name: 'ARC Alloy', required: 6, img: $ARCAlloy },
+            { name: 'Chemicals', required: 50, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Chemicals.png.webp?raw=true' },
+            { name: 'ARC Alloy', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/ARC_Alloy.png?raw=true' },
             
           ],
           [
-            { name: 'Synthesized Fuel', required: 3, img: $SynthesizedFuel  },
-            { name: 'Crude Explosives', required: 5, img: $CrudeExplosives },
-            { name: 'Pop Trigger', required: 5, img: $PopTrigger }
+            { name: 'Synthesized Fuel', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Synthesized_Fuel.png?raw=true' },
+            { name: 'Crude Explosives', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Crude_Explosives.png.webp?raw=true' },
+            { name: 'Pop Trigger', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Pop_Trigger.png?raw=true' }
           ],
           [
-            { name: 'Laboratory Reagents', required: 3, img: $LaboratoryReagents  },
-            { name: 'Explosive Compound', required: 5, img: $ExplosiveCompound },
-            { name: 'Rocketeer Driver', required: 3, img: $RocketeerDriver  }
+            { name: 'Laboratory Reagents', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Laboratory_Reagents.png.webp?raw=true' },
+            { name: 'Explosive Compound', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Explosive_Compound.png.webp?raw=true' },
+            { name: 'Rocketeer Driver', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Rocketeer_Driver.png?raw=true' }
           ]
         ]
       },
@@ -177,19 +126,19 @@
         icon: '⚡',
         levels: [
           [
-            { name: 'Plastic Parts', required: 50, img: $PlasticParts},
-            { name: 'ARC Alloy', required: 6, img: $ARCAlloy},
+            { name: 'Plastic Parts', required: 50, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Fabric.png.webp?raw=true' },
+            { name: 'ARC Alloy', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/ARC_Alloy.png?raw=true' },
             
           ],
           [
-            { name: 'Damaged Heat Sink', required: 2, img: $DamagedHeatSink  },
-            { name: 'Electrical Components', required: 5, img: $ElectricalComponents },
-            { name: 'Snitch Scanner', required: 6, img: $SnitchScanner }
-          ], 
+            { name: 'Damaged Heat Sink', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Damaged_Heat_Sink.png?raw=true' },
+            { name: 'Electrical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Electrical_Components.png?raw=true' },
+            { name: 'Snitch Scanner', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Snitch_Scanner.png?raw=true' }
+          ],
           [
-            { name: 'Fried Motherboard', required: 3, img: $FriedMotherboard },
-            { name: 'Advanced Electrical Components', required: 5, img: $AdvancedElectricalComponents },
-            { name: 'Leaper Pulse Unit', required: 4, img: $LeaperPulseUnit }
+            { name: 'Fried Motherboard', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Fried_Motherboard.png?raw=true' },
+            { name: 'Advanced Electrical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Advanced_Electrical_Components.png.webp?raw=true' },
+            { name: 'Leaper Pulse Unit', required: 4, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Leaper_Pulse_Unit.png?raw=true' }
           ]
         ]
       },
@@ -198,19 +147,19 @@
         icon: '⚗️',
         levels: [
           [
-            { name: 'Metal Parts', required: 60, img: $MetalParts },
-            { name: 'ARC Powercell', required: 30, img: $ARCPowercell },
+            { name: 'Metal Parts', required: 60, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-Metal_Parts.png.webp?raw=true' },
+            { name: 'ARC Powercell', required: 30, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/348px-ARC_Powercell.png.webp?raw=true' },
             
           ],
           [
-            { name: 'Toaster', required: 3, img: $Toaster },
-            { name: 'ARC Motion Core', required: 5, img: $ARCMotionCore },
-            { name: 'Fireball Burner', required: 8, img: $FireballBurner }
+            { name: 'Toaster', required: 3, img: 'https://raw.githubusercontent.com/jmecoli/arcraidersimages/main/e1ywoh06.png' },
+            { name: 'ARC Motion Core', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-ARC_Motion_Core.png.webp?raw=true' },
+            { name: 'Fireball Burner', required: 8, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Fireball_Burner.png?raw=true' }
           ],
           [
-            { name: 'Motor', required: 3, img: $Motor },
-            { name: 'ARC Circuitry', required: 10, img: $ARCCircuitry  },
-            { name: 'Bombardier Cell', required: 6, img: $BombardierCell }
+            { name: 'Motor', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Motor.png?raw=true' },
+            { name: 'ARC Circuitry', required: 10, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/ARC_Circuitry.png?raw=true' },
+            { name: 'Bombardier Cell', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Bombardier_Cell.png?raw=true' }
           ]
         ]
       },
@@ -219,21 +168,21 @@
         icon: '🐓',
         levels: [
           [
-            { name: 'Dog Collar', required: 1, img: $DogCollar  }
+            { name: 'Dog Collar', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Dog_Collar.png?raw=true' }
           ],
           [
-            { name: 'Lemon', required: 3, img: $lemon  },
-            { name: 'Apricot', required: 3, img: $apricot }
+            { name: 'Lemon', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Lemon.png?raw=true' },
+            { name: 'Apricot', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Apricot.png?raw=true' }
           ],
           [
-            { name: 'Prickly Pear', required: 6, img: $PricklyPear  },
-            { name: 'Olives', required: 6, img: $Olives },
-            { name: 'Cat Bed', required: 1, img: $Catbed }
+            { name: 'Prickly Pear', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Prickly_Pear.png?raw=true' },
+            { name: 'Olives', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Olives.png?raw=true' },
+            { name: 'Cat Bed', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Cat_Bed.png?raw=true' }
           ],
           [
-            { name: 'Mushroom', required: 12, img: $Mushroom },
-            { name: 'Apricot', required: 12, img: $apricot },
-            { name: 'Very Comfortable Pillow', required: 3, img: $VeryComfortablePillow }
+            { name: 'Mushroom', required: 12, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Mushroom.png?raw=true' },
+            { name: 'Apricot', required: 12, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Apricot.png?raw=true' },
+            { name: 'Very Comfortable Pillow', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Very_Comfortable_Pillow.png.webp?raw=true' }
           ]
         ]
       }
