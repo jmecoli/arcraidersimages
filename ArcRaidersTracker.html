@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arc Raiders Item Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-slate-900 to-gray-800 text-gray-100 min-h-screen">
+  <div id="app" class="p-4"></div>
+
+  <script>
+    const questItems = [
+      { name: 'Power Rod', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Power_Rod.png?raw=true' },
+      { name: 'Rocketeer Driver', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Rocketeer_Driver.png?raw=true' },
+      { name: 'Leaper Pulse Unit', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Leaper_Pulse_Unit.png?raw=true' },
+      { name: 'Hornet Driver', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Hornet_Driver.png?raw=true' },
+      { name: 'Surveyor Vault', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Surveyor_Vault.png?raw=true' },
+      { name: 'Wasp Driver', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Wasp_Driver.png?raw=true' },
+      { name: 'Antiseptic', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Antiseptic.png.webp?raw=true' },
+      { name: 'Water Pump', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Water_Pump.png?raw=true' },
+      { name: 'Syringe', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Syringe.png?raw=true' },
+      { name: 'Snitch Scanner', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Snitch_Scanner.png?raw=true' },
+      { name: 'Fertilizer', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Fertilizer.png?raw=true' },
+      { name: 'Durable Cloth', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Durable_Cloth.png?raw=true' },
+      { name: 'Great Mullein', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Great_Mullein.png?raw=true' },
+      { name: 'Battery', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Battery.png?raw=true' },
+      { name: 'ARC Alloy', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/ARC_Alloy.png?raw=true' },
+      { name: 'Wires', required: 11, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Wires.png?raw=true' }
+    ];
+
+    const workshops = {
+      gunsmith: {
+        name: 'Gunsmith',
+        icon: '🔧',
+        levels: [
+          [
+            { name: 'Rusted Tools', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Rusted_Tools.png?raw=true' },
+            { name: 'Mechanical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Mechanical_Components.png?raw=true' },
+            { name: 'Wasp Driver', required: 8, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Wasp_Driver.png?raw=true' }
+          ],
+          [
+            { name: 'Rusted Gear', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Rusted_Gear.png?raw=true' },
+            { name: 'Advanced Mechanical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Advanced_Mechanical_Components.png?raw=true' },
+            { name: 'Sentinel Firing Core', required: 4, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Sentinel_Firing_Core.png?raw=true' }
+          ]
+        ]
+      },
+      gearBench: {
+        name: 'Gear Bench',
+        icon: '🛡️',
+        levels: [
+          [
+            { name: 'Power Cable', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Power_Cable.png?raw=true' },
+            { name: 'Electrical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Electrical_Components.png?raw=true' },
+            { name: 'Hornet Driver', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Hornet_Driver.png?raw=true' }
+          ],
+          [
+            { name: 'Industrial Battery', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Industrial_Battery.png?raw=true' },
+            { name: 'Advanced Electrical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Advanced_Electrical_Components.png.webp?raw=true' },
+            { name: 'Bastion Cell', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Bastion_Cell.png?raw=true' }
+          ]
+        ]
+      },
+      medicalLab: {
+        name: 'Medical Lab',
+        icon: '🏥',
+        levels: [
+          [
+            { name: 'Cracked Bioscanner', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Cracked_Bioscanner.png?raw=true' },
+            { name: 'Durable Cloth', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Durable_Cloth.png?raw=true' },
+            { name: 'Tick Pod', required: 8, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Tick_Pod.png?raw=true' }
+          ],
+          [
+            { name: 'Rusted Shut Medical Kit', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Rusted_Shut_Medical_Kit.png?raw=true' },
+            { name: 'Antiseptic', required: 8, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Antiseptic.png.webp?raw=true' },
+            { name: 'Surveyor Vault', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Surveyor_Vault.png?raw=true' }
+          ]
+        ]
+      },
+      explosives: {
+        name: 'Explosives Station',
+        icon: '💣',
+        levels: [
+          [
+            { name: 'Synthesized Fuel', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Synthesized_Fuel.png?raw=true' },
+            { name: 'Crude Explosives', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Crude_Explosives.png.webp?raw=true' },
+            { name: 'Pop Trigger', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Pop_Trigger.png?raw=true' }
+          ],
+          [
+            { name: 'Laboratory Reagents', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Laboratory_Reagents.png.webp?raw=true' },
+            { name: 'Explosive Compound', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Explosive_Compound.png.webp?raw=true' },
+            { name: 'Rocketeer Driver', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Rocketeer_Driver.png?raw=true' }
+          ]
+        ]
+      },
+      utility: {
+        name: 'Utility Station',
+        icon: '⚡',
+        levels: [
+          [
+            { name: 'Damaged Heat Sink', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Damaged_Heat_Sink.png?raw=true' },
+            { name: 'Electrical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Electrical_Components.png?raw=true' },
+            { name: 'Snitch Scanner', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Snitch_Scanner.png?raw=true' }
+          ],
+          [
+            { name: 'Fried Motherboard', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Fried_Motherboard.png?raw=true' },
+            { name: 'Advanced Electrical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Advanced_Electrical_Components.png.webp?raw=true' },
+            { name: 'Leaper Pulse Unit', required: 4, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Leaper_Pulse_Unit.png?raw=true' }
+          ]
+        ]
+      },
+      refiner: {
+        name: 'Refiner',
+        icon: '⚗️',
+        levels: [
+          [
+            { name: 'Toaster', required: 3, img: 'https://raw.githubusercontent.com/jmecoli/arcraidersimages/main/e1ywoh06.png' },
+            { name: 'ARC Motion Core', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-ARC_Motion_Core.png.webp?raw=true' },
+            { name: 'Fireball Burner', required: 8, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Fireball_Burner.png?raw=true' }
+          ],
+          [
+            { name: 'Motor', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Motor.png?raw=true' },
+            { name: 'ARC Circuitry', required: 10, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/ARC_Circuitry.png?raw=true' },
+            { name: 'Bombardier Cell', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Bombardier_Cell.png?raw=true' }
+          ]
+        ]
+      },
+      scrappy: {
+        name: 'Scrappy',
+        icon: '🐓',
+        levels: [
+          [
+            { name: 'Dog Collar', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Dog_Collar.png?raw=true' }
+          ],
+          [
+            { name: 'Lemon', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Lemon.png?raw=true' },
+            { name: 'Apricot', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Apricot.png?raw=true' }
+          ],
+          [
+            { name: 'Prickly Pear', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Prickly_Pear.png?raw=true' },
+            { name: 'Olives', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Olives.png?raw=true' },
+            { name: 'Cat Bed', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Cat_Bed.png?raw=true' }
+          ],
+          [
+            { name: 'Mushroom', required: 12, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Mushroom.png?raw=true' },
+            { name: 'Apricot', required: 12, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/Apricot.png?raw=true' },
+            { name: 'Very Comfortable Pillow', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/522px-Very_Comfortable_Pillow.png.webp?raw=true' }
+          ]
+        ]
+      }
+    };
+
+    let questProgress = JSON.parse(localStorage.getItem('arcRaidersQuestProgress')) || questItems.map(() => 0);
+    let workshopProgress = JSON.parse(localStorage.getItem('arcRaidersWorkshopProgress')) || {};
+    let trackedItems = JSON.parse(localStorage.getItem('arcRaidersTrackedItems')) || [];
+    let activeTab = 'quests';
+
+    function saveProgress() {
+      localStorage.setItem('arcRaidersQuestProgress', JSON.stringify(questProgress));
+      localStorage.setItem('arcRaidersWorkshopProgress', JSON.stringify(workshopProgress));
+      localStorage.setItem('arcRaidersTrackedItems', JSON.stringify(trackedItems));
+    }
+
+    function updateQuestProgress(index, value) {
+      questProgress[index] = Math.max(0, Math.min(value, questItems[index].required));
+      saveProgress();
+      render();
+    }
+
+    function updateWorkshopProgress(workshopKey, levelIndex, itemIndex, value) {
+      if (!workshopProgress[workshopKey]) workshopProgress[workshopKey] = {};
+      if (!workshopProgress[workshopKey][levelIndex]) workshopProgress[workshopKey][levelIndex] = {};
+      
+      const maxValue = workshops[workshopKey].levels[levelIndex][itemIndex].required;
+      workshopProgress[workshopKey][levelIndex][itemIndex] = Math.max(0, Math.min(value, maxValue));
+      saveProgress();
+      render();
+    }
+
+    function getWorkshopItemProgress(workshopKey, levelIndex, itemIndex) {
+      return workshopProgress[workshopKey]?.[levelIndex]?.[itemIndex] || 0;
+    }
+
+    function resetAll() {
+      if (confirm('Es-tu sûr de vouloir réinitialiser toute ta progression?')) {
+        questProgress = questItems.map(() => 0);
+        workshopProgress = {};
+        trackedItems = [];
+        localStorage.removeItem('arcRaidersQuestProgress');
+        localStorage.removeItem('arcRaidersWorkshopProgress');
+        localStorage.removeItem('arcRaidersTrackedItems');
+        render();
+      }
+    }
+
+    function toggleTrackedItem(workshopKey, levelIndex, itemIndex) {
+      const itemId = `${workshopKey}-${levelIndex}-${itemIndex}`;
+      const index = trackedItems.indexOf(itemId);
+      
+      if (index > -1) {
+        trackedItems.splice(index, 1);
+      } else {
+        trackedItems.push(itemId);
+      }
+      
+      saveProgress();
+      render();
+    }
+
+    function isItemTracked(workshopKey, levelIndex, itemIndex) {
+      const itemId = `${workshopKey}-${levelIndex}-${itemIndex}`;
+      return trackedItems.includes(itemId);
+    }
+
+    function getAllTrackedItems() {
+      const items = [];
+      trackedItems.forEach(itemId => {
+        const [workshopKey, levelIndex, itemIndex] = itemId.split('-');
+        const workshop = workshops[workshopKey];
+        const item = workshop.levels[parseInt(levelIndex)][parseInt(itemIndex)];
+        const current = getWorkshopItemProgress(workshopKey, parseInt(levelIndex), parseInt(itemIndex));
+        
+        items.push({
+          workshopKey,
+          workshopName: workshop.name,
+          workshopIcon: workshop.icon,
+          levelIndex: parseInt(levelIndex),
+          itemIndex: parseInt(itemIndex),
+          item,
+          current
+        });
+      });
+      return items;
+    }
+
+    function getItemColor(name) {
+      const colors = {
+        'Magnetron': 'bg-purple-600',
+        'Power Rod': 'bg-blue-600',
+        'Rocketeer Driver': 'bg-indigo-600',
+        'Leaper Pulse Unit': 'bg-violet-600',
+        'Hornet Driver': 'bg-blue-500',
+        'Surveyor Vault': 'bg-cyan-600',
+        'Wasp Driver': 'bg-teal-600',
+        'Antiseptic': 'bg-green-600',
+        'Water Pump': 'bg-cyan-500',
+        'Syringe': 'bg-emerald-600',
+        'Glitch Scanner': 'bg-purple-500',
+        'Fertilizer': 'bg-lime-600',
+        'Durable Cloth': 'bg-amber-700',
+        'Great Mullein': 'bg-green-500',
+        'Battery': 'bg-yellow-600',
+        'ARC Alloy': 'bg-slate-600',
+        'Wires': 'bg-orange-600',
+        'Components': 'bg-gray-600',
+        'Rusted Tools': 'bg-orange-700',
+        'Rusted Gear': 'bg-orange-800',
+        'Sentinel Firing Core': 'bg-red-600',
+        'Electrical Components': 'bg-blue-600',
+        'Power Cells': 'bg-yellow-500',
+        'Industrial Battery': 'bg-yellow-700',
+        'Bastion Cell': 'bg-red-700',
+        'Tick Pod': 'bg-purple-700',
+        'Cracked Binocular': 'bg-gray-500',
+        'Rusted Steel Medical': 'bg-red-800',
+        'Dog Collar': 'bg-amber-600',
+        'Lemon': 'bg-yellow-400',
+        'Apricot': 'bg-orange-400',
+        'Prickly Pear': 'bg-pink-600',
+        'Olives': 'bg-green-700',
+        'Cat Bed': 'bg-pink-700',
+        'Pop Trigger': 'bg-red-500',
+        'Crude Explosives': 'bg-red-700',
+        'Synthesized Fuel': 'bg-orange-500',
+        'Laboratory Reagents': 'bg-cyan-600',
+        'Explosive Compound': 'bg-red-600',
+        'Fireball Burner': 'bg-orange-600',
+        'ARC Motion Core': 'bg-blue-700',
+        'Toaster': 'bg-gray-700',
+        'Motor': 'bg-slate-700',
+        'ARC Circuitry': 'bg-indigo-600',
+        'Bombadier Cell': 'bg-red-800',
+        'Damaged Heat Sink': 'bg-gray-600',
+        'Fried Motherboard': 'bg-green-800',
+        'Advance Electrical': 'bg-blue-800',
+        'Mushroom': 'bg-red-400',
+        'Very Comfortable': 'bg-purple-400',
+        'Pillow': 'bg-blue-400'
+      };
+      return colors[name] || 'bg-gray-700';
+    }
+
+    function getItemInitials(name) {
+      const words = name.split(' ');
+      if (words.length === 1) {
+        return name.substring(0, 2).toUpperCase();
+      }
+      return words.map(w => w[0]).join('').substring(0, 2).toUpperCase();
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      
+      app.innerHTML = `
+        <div class="max-w-7xl mx-auto">
+          <div class="mb-8 text-center">
+            <h1 class="text-4xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              Arc Raiders Tracker
+            </h1>
+            <p class="text-gray-400">Track tes items et upgrades</p>
+          </div>
+
+          <div class="flex gap-2 mb-6 flex-wrap justify-center">
+            <button onclick="activeTab='quests'; render()" class="px-6 py-2 rounded-lg font-semibold transition-all ${activeTab === 'quests' ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}">
+              Keep for Quests
+            </button>
+            <button onclick="activeTab='tracked'; render()" class="px-6 py-2 rounded-lg font-semibold transition-all ${activeTab === 'tracked' ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}">
+              Suivi (${trackedItems.length})
+            </button>
+            <button onclick="activeTab='workshops'; render()" class="px-6 py-2 rounded-lg font-semibold transition-all ${activeTab === 'workshops' ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}">
+              Workshop Upgrades
+            </button>
+            <button onclick="resetAll()" class="px-6 py-2 rounded-lg font-semibold bg-red-600 text-white hover:bg-red-700 transition-all">
+              Reset
+            </button>
+          </div>
+
+          <div id="content"></div>
+        </div>
+      `;
+
+      const content = document.getElementById('content');
+
+      if (activeTab === 'tracked') {
+        const trackedItemsList = getAllTrackedItems();
+        
+        if (trackedItemsList.length === 0) {
+          content.innerHTML = `
+            <div class="text-center py-12">
+              <p class="text-gray-400 text-lg mb-4">Aucun item en suivi</p>
+              <p class="text-gray-500">Va dans "Workshop Upgrades" et clique sur l'étoile ⭐ pour ajouter des items à suivre</p>
+            </div>
+          `;
+        } else {
+          content.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              ${trackedItemsList.map(tracked => {
+                const percentage = (tracked.current / tracked.item.required) * 100;
+                const isComplete = tracked.current >= tracked.item.required;
+                const remaining = tracked.item.required - tracked.current;
+
+                return `
+                  <div class="bg-gray-800 rounded-lg p-4 border-2 transition-all ${isComplete ? 'border-green-500 shadow-lg shadow-green-500/20' : remaining <= 100 ? 'border-yellow-500' : 'border-gray-700 hover:border-cyan-500/50'}">
+                    <div class="flex items-start gap-3 mb-3">
+                      <div class="w-20 h-20 rounded-lg bg-gray-900 flex items-center justify-center flex-shrink-0 p-2 border border-gray-700">
+                        ${tracked.item.img ? `
+                          <img src="${tracked.item.img}" alt="${tracked.item.name}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                          <div class="${getItemColor(tracked.item.name)} w-full h-full hidden items-center justify-center font-bold text-white text-xl rounded">
+                            ${getItemInitials(tracked.item.name)}
+                          </div>
+                        ` : `
+                          <div class="${getItemColor(tracked.item.name)} w-full h-full flex items-center justify-center font-bold text-white text-xl rounded">
+                            ${getItemInitials(tracked.item.name)}
+                          </div>
+                        `}
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-2">
+                          <h3 class="font-semibold text-lg truncate">${tracked.item.name}</h3>
+                          <button onclick="toggleTrackedItem('${tracked.workshopKey}', ${tracked.levelIndex}, ${tracked.itemIndex})" class="text-yellow-400 hover:text-yellow-300 flex-shrink-0">
+                            ⭐
+                          </button>
+                        </div>
+                        <p class="text-xs text-gray-400">${tracked.workshopIcon} ${tracked.workshopName} - Level ${tracked.levelIndex + 1}</p>
+                      </div>
+                    </div>
+                    
+                    ${!isComplete && remaining <= 100 ? `
+                      <div class="mb-3 bg-yellow-900/20 border border-yellow-500/30 rounded p-2">
+                        <p class="text-yellow-400 text-sm font-semibold">⚠️ Il te manque seulement ${remaining}!</p>
+                      </div>
+                    ` : ''}
+                    
+                    <div class="mb-3">
+                      <div class="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
+                        <div class="h-full transition-all duration-300 ${isComplete ? 'bg-green-500' : 'bg-cyan-500'}" style="width: ${percentage}%"></div>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-2">
+                      <div class="flex items-center gap-2">
+                        <button onclick="updateWorkshopProgress('${tracked.workshopKey}', ${tracked.levelIndex}, ${tracked.itemIndex}, ${tracked.current - 1})" class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold text-xl">-</button>
+                        <input type="number" value="${tracked.current}" onchange="updateWorkshopProgress('${tracked.workshopKey}', ${tracked.levelIndex}, ${tracked.itemIndex}, parseInt(this.value) || 0)" class="w-20 bg-gray-700 text-center rounded-lg py-2 px-1 text-sm">
+                        <button onclick="updateWorkshopProgress('${tracked.workshopKey}', ${tracked.levelIndex}, ${tracked.itemIndex}, ${tracked.current + 1})" class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold text-xl">+</button>
+                      </div>
+                      <div class="text-sm text-gray-400">/ ${tracked.item.required.toLocaleString()}</div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `;
+        }
+      } else if (activeTab === 'quests') {
+        content.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            ${questItems.map((item, index) => {
+              const current = questProgress[index];
+              const percentage = (current / item.required) * 100;
+              const isComplete = current >= item.required;
+
+              return `
+                <div class="bg-gray-800 rounded-lg p-4 border-2 transition-all ${isComplete ? 'border-green-500 shadow-lg shadow-green-500/20' : 'border-gray-700 hover:border-cyan-500/50'}">
+                  <div class="flex items-start gap-3 mb-3">
+                    <div class="w-20 h-20 rounded-lg bg-gray-900 flex items-center justify-center flex-shrink-0 p-2 border border-gray-700">
+                      ${item.img ? `
+                        <img src="${item.img}" alt="${item.name}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="${getItemColor(item.name)} w-full h-full hidden items-center justify-center font-bold text-white text-xl rounded">
+                          ${getItemInitials(item.name)}
+                        </div>
+                      ` : `
+                        <div class="${getItemColor(item.name)} w-full h-full flex items-center justify-center font-bold text-white text-xl rounded">
+                          ${getItemInitials(item.name)}
+                        </div>
+                      `}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center justify-between gap-2">
+                        <h3 class="font-semibold text-lg truncate">${item.name}</h3>
+                        ${isComplete ? '<svg class="w-6 h-6 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
+                      <div class="h-full transition-all duration-300 ${isComplete ? 'bg-green-500' : 'bg-cyan-500'}" style="width: ${percentage}%"></div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                      <button onclick="updateQuestProgress(${index}, ${current - 1})" class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold text-xl">-</button>
+                      <input type="number" value="${current}" onchange="updateQuestProgress(${index}, parseInt(this.value) || 0)" class="w-20 bg-gray-700 text-center rounded-lg py-2 px-1 text-sm">
+                      <button onclick="updateQuestProgress(${index}, ${current + 1})" class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold text-xl">+</button>
+                    </div>
+                    <div class="text-sm text-gray-400">/ ${item.required.toLocaleString()}</div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      } else {
+        content.innerHTML = Object.entries(workshops).map(([key, workshop]) => {
+          if (workshop.levels.length === 0) return '';
+
+          return `
+            <div class="bg-gray-800 rounded-lg p-6 border-2 border-gray-700 mb-6">
+              <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="text-3xl">${workshop.icon}</span>
+                ${workshop.name}
+              </h2>
+
+              ${workshop.levels.map((level, levelIndex) => `
+                <div class="mb-6 last:mb-0">
+                  <h3 class="text-lg font-semibold mb-3 text-cyan-400">Level ${levelIndex + 1}</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    ${level.map((item, itemIndex) => {
+                      const current = getWorkshopItemProgress(key, levelIndex, itemIndex);
+                      const percentage = (current / item.required) * 100;
+                      const isComplete = current >= item.required;
+
+                      return `
+                        <div class="bg-gray-900 rounded-lg p-3 border ${isComplete ? 'border-green-500' : 'border-gray-700'}">
+                          <div class="flex items-start gap-2 mb-2">
+                            <div class="w-16 h-16 rounded bg-gray-800 flex items-center justify-center flex-shrink-0 p-1 border border-gray-700">
+                              ${item.img ? `
+                                <img src="${item.img}" alt="${item.name}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="${getItemColor(item.name)} w-full h-full hidden items-center justify-center font-bold text-white text-sm rounded">
+                                  ${getItemInitials(item.name)}
+                                </div>
+                              ` : `
+                                <div class="${getItemColor(item.name)} w-full h-full flex items-center justify-center font-bold text-white text-sm rounded">
+                                  ${getItemInitials(item.name)}
+                                </div>
+                              `}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                              <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium truncate">${item.name}</span>
+                                <div class="flex items-center gap-1 flex-shrink-0">
+                                  <button onclick="toggleTrackedItem('${key}', ${levelIndex}, ${itemIndex})" class="text-lg ${isItemTracked(key, levelIndex, itemIndex) ? 'text-yellow-400' : 'text-gray-600 hover:text-yellow-400'}" title="${isItemTracked(key, levelIndex, itemIndex) ? 'Retirer du suivi' : 'Ajouter au suivi'}">
+                                    ${isItemTracked(key, levelIndex, itemIndex) ? '⭐' : '☆'}
+                                  </button>
+                                  ${isComplete ? '<svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="mb-2">
+                            <div class="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+                              <div class="h-full transition-all ${isComplete ? 'bg-green-500' : 'bg-cyan-500'}" style="width: ${percentage}%"></div>
+                            </div>
+                          </div>
+
+                          <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-1">
+                              <button onclick="updateWorkshopProgress('${key}', ${levelIndex}, ${itemIndex}, ${current - 1})" class="w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded text-sm">-</button>
+                              <input type="number" value="${current}" onchange="updateWorkshopProgress('${key}', ${levelIndex}, ${itemIndex}, parseInt(this.value) || 0)" class="w-16 bg-gray-700 text-center rounded py-1 text-xs">
+                              <button onclick="updateWorkshopProgress('${key}', ${levelIndex}, ${itemIndex}, ${current + 1})" class="w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded text-sm">+</button>
+                            </div>
+                            <span class="text-xs text-gray-400">/ ${item.required.toLocaleString()}</span>
+                          </div>
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    render();
+  </script>
+</body>
+</html>
