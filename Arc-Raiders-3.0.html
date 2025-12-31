@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arc Raiders Item Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-slate-900 to-gray-800 text-gray-100 min-h-screen">
+  <div id="app" class="p-4"></div>
+
+  <script>
+    const questItems = [
+      { name: 'Power Rod', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Power_Rod.png?raw=true' },
+      { name: 'Rocketeer Driver', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Rocketeer_Driver.png?raw=true' },
+      { name: 'Leaper Pulse Unit', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Leaper_Pulse_Unit.png?raw=true' },
+      { name: 'Hornet Driver', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Hornet_Driver.png?raw=true' },
+      { name: 'Surveyor Vault', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Surveyor_Vault.png?raw=true' },
+      { name: 'Wasp Driver', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Wasp_Driver.png?raw=true' },
+      { name: 'Antiseptic', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Antiseptic.png.webp?raw=true' },
+      { name: 'Water Pump', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Water_Pump.png?raw=true' },
+      { name: 'Syringe', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Syringe.png?raw=true' },
+      { name: 'Snitch Scanner', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Snitch_Scanner.png?raw=true' },
+      { name: 'Fertilizer', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Fertilizer.png?raw=true' },
+      { name: 'Durable Cloth', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Durable_Cloth.png?raw=true' },
+      { name: 'Great Mullein', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Great_Mullein.png?raw=true' },
+      { name: 'Battery', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Battery.png?raw=true' },
+      { name: 'ARC Alloy', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/ARC_Alloy.png?raw=true' },
+      { name: 'Wires', required: 11, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Wires.png?raw=true' }
+    ];
+
+    const workshops = {
+      gunsmith: {
+        name: 'Gunsmith',
+        icon: '🔧',
+        levels: [
+           [
+            { name: 'Metal Parts', required: 20, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Metal_Parts.png.webp?raw=true' },
+            { name: 'Rubber Parts', required: 30, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Rubber_Parts.png.webp?raw=true' },
+          ],
+          [
+            { name: 'Rusted Tools', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Rusted_Tools.png?raw=true' },
+            { name: 'Mechanical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Mechanical_Components.png?raw=true' },
+            { name: 'Wasp Driver', required: 8, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Wasp_Driver.png?raw=true' }
+          ],
+          [
+            { name: 'Rusted Gear', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Rusted_Gear.png?raw=true' },
+            { name: 'Advanced Mechanical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Advanced_Mechanical_Components.png?raw=true' },
+            { name: 'Sentinel Firing Core', required: 4, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Sentinel_Firing_Core.png?raw=true' }
+          ]
+        ]
+      },
+      gearBench: {
+        name: 'Gear Bench',
+        icon: '🛡️',
+        levels: [
+          [
+            { name: 'Plastic Parts', required: 25, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Plastic_Parts.png.webp?raw=true' },
+            { name: 'Fabric', required: 30, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Fabric.png.webp?raw=true' },
+          ],
+          [
+            { name: 'Power Cable', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Power_Cable.png?raw=true' },
+            { name: 'Electrical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Electrical_Components.png?raw=true' },
+            { name: 'Hornet Driver', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Hornet_Driver.png?raw=true' }
+          ],
+          [
+            { name: 'Industrial Battery', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Industrial_Battery.png?raw=true' },
+            { name: 'Advanced Electrical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Advanced_Electrical_Components.png.webp?raw=true' },
+            { name: 'Bastion Cell', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Bastion_Cell.png?raw=true' }
+          ]
+        ]
+      },
+      medicalLab: {
+        name: 'Medical Lab',
+        icon: '🏥',
+        levels: [
+          [
+            { name: 'Fabric', required: 50, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Fabric.png.webp?raw=true' },
+            { name: 'ARC Alloy', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/ARC_Alloy.png?raw=true' },
+          ],
+          [
+            { name: 'Cracked Bioscanner', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Cracked_Bioscanner.png?raw=true' },
+            { name: 'Durable Cloth', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Durable_Cloth.png?raw=true' },
+            { name: 'Tick Pod', required: 8, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Tick_Pod.png?raw=true' }
+          ],
+          [
+            { name: 'Rusted Shut Medical Kit', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Rusted_Shut_Medical_Kit.png?raw=true' },
+            { name: 'Antiseptic', required: 8, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Antiseptic.png.webp?raw=true' },
+            { name: 'Surveyor Vault', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Surveyor_Vault.png?raw=true' }
+          ]
+        ]
+      },
+      explosives: {
+        name: 'Explosives Station',
+        icon: '💣',
+        levels: [
+          [
+            { name: 'Chemicals', required: 50, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Chemicals.png.webp?raw=true' },
+            { name: 'ARC Alloy', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/ARC_Alloy.png?raw=true' },
+          ],
+          [
+            { name: 'Synthesized Fuel', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Synthesized_Fuel.png?raw=true' },
+            { name: 'Crude Explosives', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Crude_Explosives.png.webp?raw=true' },
+            { name: 'Pop Trigger', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Pop_Trigger.png?raw=true' }
+          ],
+          [
+            { name: 'Laboratory Reagents', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Laboratory_Reagents.png.webp?raw=true' },
+            { name: 'Explosive Compound', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Explosive_Compound.png.webp?raw=true' },
+            { name: 'Rocketeer Driver', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Rocketeer_Driver.png?raw=true' }
+          ]
+        ]
+      },
+      utility: {
+        name: 'Utility Station',
+        icon: '⚡',
+        levels: [
+          [
+            { name: 'Plastic Parts', required: 50, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Plastic_Parts.png.webp?raw=true' },
+            { name: 'ARC Alloy', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/ARC_Alloy.png?raw=true' },
+          ],
+          [
+            { name: 'Damaged Heat Sink', required: 2, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Damaged_Heat_Sink.png?raw=true' },
+            { name: 'Electrical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Electrical_Components.png?raw=true' },
+            { name: 'Snitch Scanner', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Snitch_Scanner.png?raw=true' }
+          ],
+          [
+            { name: 'Fried Motherboard', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Fried_Motherboard.png?raw=true' },
+            { name: 'Advanced Electrical Components', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Advanced_Electrical_Components.png.webp?raw=true' },
+            { name: 'Leaper Pulse Unit', required: 4, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Leaper_Pulse_Unit.png?raw=true' }
+          ]
+        ]
+      },
+      refiner: {
+        name: 'Refiner',
+        icon: '⚗️',
+        levels: [
+          [
+            { name: 'Metal Parts', required: 60, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Metal_Parts.png.webp?raw=true' },
+            { name: 'ARC Powercell', required: 30, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-ARC_Powercell.png.webp?raw=true' },
+          ],
+          [
+            { name: 'Toaster', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/e1ywoh06.png?raw=true' },
+            { name: 'ARC Motion Core', required: 5, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-ARC_Motion_Core.png.webp?raw=true' },
+            { name: 'Fireball Burner', required: 8, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Fireball_Burner.png?raw=true' }
+          ],
+          [
+            { name: 'Motor', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Motor.png?raw=true' },
+            { name: 'ARC Circuitry', required: 10, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/ARC_Circuitry.png?raw=true' },
+            { name: 'Bombardier Cell', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Bombardier_Cell.png?raw=true' }
+          ]
+        ]
+      },
+      scrappy: {
+        name: 'Scrappy',
+        icon: '🐕',
+        levels: [
+          [
+            { name: 'Dog Collar', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Dog_Collar.png?raw=true' }
+          ],
+          [
+            { name: 'Lemon', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Lemon.png?raw=true' },
+            { name: 'Apricot', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Apricot.png?raw=true' }
+          ],
+          [
+            { name: 'Prickly Pear', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Prickly_Pear.png?raw=true' },
+            { name: 'Olives', required: 6, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Olives.png?raw=true' },
+            { name: 'Cat Bed', required: 1, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Cat_Bed.png?raw=true' }
+          ],
+          [
+            { name: 'Mushroom', required: 12, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Mushroom.png?raw=true' },
+            { name: 'Apricot', required: 12, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Apricot.png?raw=true' },
+            { name: 'Very Comfortable Pillow', required: 3, img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Very_Comfortable_Pillow.png.webp?raw=true' }
+          ]
+        ]
+      }
+    };
+
+    // Base de données des recettes - Vérifié avec le wiki Arc Raiders
+    const craftingDatabase = {
+      'Advanced Electrical Components': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Advanced_Electrical_Components.png.webp?raw=true', crafts: ['Raider Hatch Key', 'Power Rod', 'Snap Hook', 'Photoelectric Cloak', 'Combat Mk.3', 'Tactical Mk.3', 'Looting Mk.3'] },
+      'Advanced Mechanical Components': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Advanced_Mechanical_Components.png?raw=true', crafts: ['Bettina', 'Osprey', 'Renegade', 'Torrente', 'Venator', 'Magnetic Accelerator'] },
+      'Antiseptic': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Antiseptic.png.webp?raw=true', crafts: ['Sterilized Bandage', 'Vita Spray', 'Vita Shot'] },
+      'ARC Alloy': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/ARC_Alloy.png?raw=true', crafts: ['Light Shield', 'ARC Motion Core', 'ARC Circuitry', 'Seeker Grenade'] },
+      'ARC Circuitry': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/ARC_Circuitry.png?raw=true', crafts: ['Power Rod', 'Medium Shield'] },
+      'ARC Motion Core': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-ARC_Motion_Core.png.webp?raw=true', crafts: ['Magnetic Accelerator', 'Wolfpack'] },
+      'ARC Powercell': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-ARC_Powercell.png.webp?raw=true', crafts: ['Shield Recharger'] },
+      'Battery': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Battery.png?raw=true', crafts: ['Energy Clip', 'Medium Shield', 'Jolt Mine'] },
+      'Canister': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Canister.png.webp?raw=true', crafts: ['Bettina', 'Vita Spray', 'Smoke Grenade', 'Heavy Fuze Grenade'] },
+      'Chemicals': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Chemicals.png.webp?raw=true', crafts: ['Ammo (All types)', 'Grenades', 'Light Sticks', 'Crude Explosives', 'Antiseptic'] },
+      'Complex Gun Parts': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Complex_Gun_Parts.png.webp?raw=true', crafts: ['Equalizer', 'Jupiter'] },
+      'Crude Explosives': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Crude_Explosives.png.webp?raw=true', crafts: ['Explosive Compound', 'Seeker Grenade', 'Pulse Mine', 'Snap Blast Grenade', 'Shrapnel Grenade'] },
+      'Duct Tape': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Duct_Tape.png.webp?raw=true', crafts: ['Stocks (All)', 'Grips (All)'] },
+      'Durable Cloth': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Durable_Cloth.png?raw=true', crafts: ['Herbal Bandage', 'Sterilized Bandage'] },
+      'Electrical Components': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Electrical_Components.png?raw=true', crafts: ['Tactical MK.2', 'Combat MK.2', 'Looting MK.2', 'Surge Shield Recharger', 'Lure Grenade', 'Tagging Grenade', 'Advanced Electrical Components', 'Jolt Mine'] },
+      'Exodus Modules': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Exodus_Modules.png.webp?raw=true', crafts: ['Tempest', 'Vulcano', 'Hullcracker', 'Bobcat', 'Snaphook'] },
+      'Explosive Compound': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/522px-Explosive_Compound.png.webp?raw=true', crafts: ['Trailblazer', 'Wolfpack', 'Explosive Mine', 'Blaze Grenade', 'Deadline', 'Heavy Fuze Grenade'] },
+      'Fireball Burner': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Fireball_Burner.png?raw=true', crafts: ['Flame Spray'] },
+      'Magnet': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Magnet.png.webp?raw=true', crafts: ['Tactical Mk.2'] },
+      'Magnetic Accelerator': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Magnetic_Accelerator.png.webp?raw=true', crafts: ['Tempest', 'Equalizer', 'Vulcano', 'Aphelion', 'Jupiter', 'Hullcracker'] },
+      'Mechanical Components': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Mechanical_Components.png?raw=true', crafts: ['Advanced Mechanical Components', 'Weapons', 'Attachments', 'Mod Components', 'Zipline'] },
+      'Metal Parts': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Metal_Parts.png.webp?raw=true', crafts: ['Blaze Grenade', 'Door Blocker', 'Ammo (All)', 'Zipline', 'Compensator I', 'Mechanical Components'] },
+      'Power Rod': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Power_Rod.png?raw=true', crafts: ['Heavy Shield', 'Snap Hook'] },
+      'Rope': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Rope.png.webp?raw=true', crafts: ['Zipline', 'Snap Hook'] },
+      'Steel Spring': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Steel_Spring.png.webp?raw=true', crafts: ['Torrente', 'Extended Mags (All)', 'Shrapnel Grenade'] },
+      'Synthesized Fuel': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Synthesized_Fuel.png?raw=true', crafts: ['Trailblazer', 'Deadline'] },
+      'Syringe': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Syringe.png?raw=true', crafts: ['Vita Shot'] },
+      'Voltage Converter': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/348px-Voltage_Converter.png.webp?raw=true', crafts: ['Heavy Shield', 'Showstopper'] },
+      'Wires': { img: 'https://github.com/jmecoli/arcraidersimages/blob/main/images/Wires.png?raw=true', crafts: ['Grenade Traps (All)', 'Osprey', 'Compensators', 'Barrels', 'Muzzle Brakes', 'Chokes', 'Silencers', 'Advanced Electrical Components'] }
+    };
+
+    let questProgress = JSON.parse(localStorage.getItem('arcRaidersQuestProgress')) || questItems.map(() => 0);
+    let workshopProgress = JSON.parse(localStorage.getItem('arcRaidersWorkshopProgress')) || {};
+    let trackedItems = JSON.parse(localStorage.getItem('arcRaidersTrackedItems')) || [];
+    let activeTab = 'quests';
+    let selectedCraftingItem = null;
+    let craftingSearchQuery = '';
+    let lastScrollPosition = 0;
+
+    function selectCraftingItem(item) {
+      lastScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+      selectedCraftingItem = item;
+      render();
+    }
+
+    function saveProgress() {
+      localStorage.setItem('arcRaidersQuestProgress', JSON.stringify(questProgress));
+      localStorage.setItem('arcRaidersWorkshopProgress', JSON.stringify(workshopProgress));
+      localStorage.setItem('arcRaidersTrackedItems', JSON.stringify(trackedItems));
+    }
+
+    function updateQuestProgress(index, value) {
+      lastScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+      questProgress[index] = Math.max(0, Math.min(value, questItems[index].required));
+      saveProgress();
+      render();
+    }
+
+    function updateWorkshopProgress(workshopKey, levelIndex, itemIndex, value) {
+      lastScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+      if (!workshopProgress[workshopKey]) workshopProgress[workshopKey] = {};
+      if (!workshopProgress[workshopKey][levelIndex]) workshopProgress[workshopKey][levelIndex] = {};
+      
+      const maxValue = workshops[workshopKey].levels[levelIndex][itemIndex].required;
+      workshopProgress[workshopKey][levelIndex][itemIndex] = Math.max(0, Math.min(value, maxValue));
+      saveProgress();
+      render();
+    }
+
+    function getWorkshopItemProgress(workshopKey, levelIndex, itemIndex) {
+      return workshopProgress[workshopKey]?.[levelIndex]?.[itemIndex] || 0;
+    }
+
+    function resetAll() {
+      if (confirm('Are you sure you want to reset all your progress?')) {
+        questProgress = questItems.map(() => 0);
+        workshopProgress = {};
+        trackedItems = [];
+        localStorage.removeItem('arcRaidersQuestProgress');
+        localStorage.removeItem('arcRaidersWorkshopProgress');
+        localStorage.removeItem('arcRaidersTrackedItems');
+        render();
+      }
+    }
+
+    function toggleTrackedItem(workshopKey, levelIndex, itemIndex) {
+      lastScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+      const itemId = `${workshopKey}-${levelIndex}-${itemIndex}`;
+      const index = trackedItems.indexOf(itemId);
+      
+      if (index > -1) {
+        trackedItems.splice(index, 1);
+      } else {
+        trackedItems.push(itemId);
+      }
+      
+      saveProgress();
+      render();
+    }
+
+    function isItemTracked(workshopKey, levelIndex, itemIndex) {
+      const itemId = `${workshopKey}-${levelIndex}-${itemIndex}`;
+      return trackedItems.includes(itemId);
+    }
+
+    function getAllTrackedItems() {
+      const items = [];
+      trackedItems.forEach(itemId => {
+        const [workshopKey, levelIndex, itemIndex] = itemId.split('-');
+        const workshop = workshops[workshopKey];
+        if (!workshop) return;
+        const item = workshop.levels[parseInt(levelIndex)][parseInt(itemIndex)];
+        const current = getWorkshopItemProgress(workshopKey, parseInt(levelIndex), parseInt(itemIndex));
+        
+        items.push({
+          workshopKey,
+          workshopName: workshop.name,
+          workshopIcon: workshop.icon,
+          levelIndex: parseInt(levelIndex),
+          itemIndex: parseInt(itemIndex),
+          item,
+          current
+        });
+      });
+      return items;
+    }
+
+    function getItemColor(name) {
+      const colors = {
+        'Power Rod': 'bg-blue-600',
+        'Rocketeer Driver': 'bg-indigo-600',
+        'Leaper Pulse Unit': 'bg-violet-600',
+        'Hornet Driver': 'bg-blue-500',
+        'Surveyor Vault': 'bg-cyan-600',
+        'Wasp Driver': 'bg-teal-600',
+        'Antiseptic': 'bg-green-600',
+        'Water Pump': 'bg-cyan-500',
+        'Syringe': 'bg-emerald-600',
+        'Snitch Scanner': 'bg-purple-500',
+        'Fertilizer': 'bg-lime-600',
+        'Durable Cloth': 'bg-amber-700',
+        'Great Mullein': 'bg-green-500',
+        'Battery': 'bg-yellow-600',
+        'ARC Alloy': 'bg-slate-600',
+        'Wires': 'bg-orange-600',
+        'Metal Parts': 'bg-gray-600',
+        'Plastic Parts': 'bg-blue-400',
+        'Chemicals': 'bg-green-500',
+        'Fabric': 'bg-amber-600'
+      };
+      return colors[name] || 'bg-gray-700';
+    }
+
+    function getItemInitials(name) {
+      const words = name.split(' ');
+      if (words.length === 1) {
+        return name.substring(0, 2).toUpperCase();
+      }
+      return words.map(w => w[0]).join('').substring(0, 2).toUpperCase();
+    }
+
+    function renderCraftingTab() {
+      const itemNames = Object.keys(craftingDatabase).sort();
+      const filteredItems = craftingSearchQuery 
+        ? itemNames.filter(item => {
+            const query = craftingSearchQuery.toLowerCase();
+            // Chercher dans le nom de l'ingrédient
+            if (item.toLowerCase().includes(query)) return true;
+            // Chercher dans les recettes que cet ingrédient peut créer
+            return craftingDatabase[item].crafts.some(craft => 
+              craft.toLowerCase().includes(query)
+            );
+          })
+        : itemNames;
+
+      return `
+        <div class="space-y-6">
+          <div class="bg-gray-800 rounded-lg p-6 border-2 border-gray-700">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-2xl font-bold text-cyan-400">Crafting Ingredients (${itemNames.length})</h2>
+              <div class="w-80">
+                <input 
+                  type="text" 
+                  placeholder="🔍 Search ingredients or recipes..." 
+                  value="${craftingSearchQuery}"
+                  oninput="craftingSearchQuery = this.value; render()"
+                  class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-cyan-500 focus:outline-none"
+                >
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+              ${filteredItems.map(item => {
+                const itemData = craftingDatabase[item];
+                return `
+                  <button onclick="selectCraftingItem('${item}')" 
+                    class="flex flex-col items-center p-4 rounded-lg transition-all ${selectedCraftingItem === item ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-500/50' : 'bg-gray-700 hover:bg-gray-600'}">
+                    <div class="w-20 h-20 rounded-lg bg-gray-900 flex items-center justify-center p-2 mb-2">
+                      ${itemData.img ? `<img src="${itemData.img}" class="w-full h-full object-contain">` : `<div class="${getItemColor(item)} w-full h-full flex items-center justify-center font-bold text-sm">${getItemInitials(item)}</div>`}
+                    </div>
+                    <span class="text-sm font-medium text-center leading-tight">${item}</span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
+          ${selectedCraftingItem ? `
+            <div class="bg-gray-800 rounded-lg p-6 border-2 border-cyan-500">
+              <div class="flex items-center gap-4 mb-6">
+                <div class="w-20 h-20 rounded-lg bg-gray-900 flex items-center justify-center p-2">
+                  ${craftingDatabase[selectedCraftingItem].img ? 
+                    `<img src="${craftingDatabase[selectedCraftingItem].img}" class="w-full h-full object-contain">` : 
+                    `<div class="${getItemColor(selectedCraftingItem)} w-full h-full flex items-center justify-center text-xl font-bold">${getItemInitials(selectedCraftingItem)}</div>`
+                  }
+                </div>
+                <h2 class="text-2xl font-bold">${selectedCraftingItem}</h2>
+              </div>
+              
+              <h3 class="text-lg font-semibold mb-4 text-cyan-400">Can be used to craft:</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                ${craftingDatabase[selectedCraftingItem].crafts.map(craftable => `
+                  <div class="bg-gray-900 rounded-lg p-4 border border-gray-700 hover:border-cyan-500 transition-all">
+                    <div class="flex items-center gap-3">
+                      <div class="w-2 h-2 rounded-full bg-cyan-500"></div>
+                      <span class="font-medium text-sm">${craftable}</span>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      
+      const activeElement = document.activeElement;
+      const shouldRestoreFocus = activeElement && activeElement.tagName === 'INPUT' && activeElement.placeholder.includes('Search');
+      
+      app.innerHTML = `
+        <div class="max-w-7xl mx-auto">
+          <div class="mb-8 text-center">
+            <h1 class="text-4xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              Arc Raiders Tracker
+            </h1>
+            <p class="text-gray-400">Track your items and upgrades</p>
+          </div>
+
+          <div class="flex gap-2 mb-6 flex-wrap justify-center">
+            <button onclick="activeTab='quests'; render()" class="px-6 py-2 rounded-lg font-semibold transition-all ${activeTab === 'quests' ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}">
+              Keep for Quests
+            </button>
+            <button onclick="activeTab='tracked'; render()" class="px-6 py-2 rounded-lg font-semibold transition-all ${activeTab === 'tracked' ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}">
+              Tracked (${trackedItems.length})
+            </button>
+            <button onclick="activeTab='crafting'; render()" class="px-6 py-2 rounded-lg font-semibold transition-all ${activeTab === 'crafting' ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}">
+              Crafting Recipes
+            </button>
+            <button onclick="activeTab='workshops'; render()" class="px-6 py-2 rounded-lg font-semibold transition-all ${activeTab === 'workshops' ? 'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}">
+              Workshop Upgrades
+            </button>
+            <button onclick="resetAll()" class="px-6 py-2 rounded-lg font-semibold bg-red-600 text-white hover:bg-red-700 transition-all">
+              Reset
+            </button>
+          </div>
+
+          <div id="content"></div>
+        </div>
+      `;
+
+      const content = document.getElementById('content');
+
+      if (activeTab === 'crafting') {
+        content.innerHTML = renderCraftingTab();
+      } else if (activeTab === 'tracked') {
+        const trackedItemsList = getAllTrackedItems();
+        
+        if (trackedItemsList.length === 0) {
+          content.innerHTML = `
+            <div class="text-center py-12">
+              <p class="text-gray-400 text-lg mb-4">No tracked items</p>
+              <p class="text-gray-500">Go to "Workshop Upgrades" and click the star ⭐ to add items to track</p>
+            </div>
+          `;
+        } else {
+          content.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              ${trackedItemsList.map(tracked => {
+                const percentage = (tracked.current / tracked.item.required) * 100;
+                const isComplete = tracked.current >= tracked.item.required;
+                const remaining = tracked.item.required - tracked.current;
+
+                return `
+                  <div class="bg-gray-800 rounded-lg p-4 border-2 transition-all ${isComplete ? 'border-green-500 shadow-lg shadow-green-500/20' : remaining <= 100 ? 'border-yellow-500' : 'border-gray-700 hover:border-cyan-500/50'}">
+                    <div class="flex items-start gap-3 mb-3">
+                      <div class="w-20 h-20 rounded-lg bg-gray-900 flex items-center justify-center flex-shrink-0 p-2 border border-gray-700">
+                        ${tracked.item.img ? `
+                          <img src="${tracked.item.img}" alt="${tracked.item.name}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                          <div class="${getItemColor(tracked.item.name)} w-full h-full hidden items-center justify-center font-bold text-white text-xl rounded">
+                            ${getItemInitials(tracked.item.name)}
+                          </div>
+                        ` : `
+                          <div class="${getItemColor(tracked.item.name)} w-full h-full flex items-center justify-center font-bold text-white text-xl rounded">
+                            ${getItemInitials(tracked.item.name)}
+                          </div>
+                        `}
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-2">
+                          <h3 class="font-semibold text-lg truncate">${tracked.item.name}</h3>
+                          <button onclick="toggleTrackedItem('${tracked.workshopKey}', ${tracked.levelIndex}, ${tracked.itemIndex})" class="text-yellow-400 hover:text-yellow-300 flex-shrink-0">
+                            ⭐
+                          </button>
+                        </div>
+                        <p class="text-xs text-gray-400">${tracked.workshopIcon} ${tracked.workshopName} - Level ${tracked.levelIndex + 1}</p>
+                      </div>
+                    </div>
+                    
+                    ${!isComplete && remaining <= 100 ? `
+                      <div class="mb-3 bg-yellow-900/20 border border-yellow-500/30 rounded p-2">
+                        <p class="text-yellow-400 text-sm font-semibold">⚠️ You only need ${remaining} more!</p>
+                      </div>
+                    ` : ''}
+                    
+                    <div class="mb-3">
+                      <div class="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
+                        <div class="h-full transition-all duration-300 ${isComplete ? 'bg-green-500' : 'bg-cyan-500'}" style="width: ${percentage}%"></div>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-2">
+                      <div class="flex items-center gap-2">
+                        <button onclick="updateWorkshopProgress('${tracked.workshopKey}', ${tracked.levelIndex}, ${tracked.itemIndex}, ${tracked.current - 1})" class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold text-xl">-</button>
+                        <input type="number" value="${tracked.current}" onchange="updateWorkshopProgress('${tracked.workshopKey}', ${tracked.levelIndex}, ${tracked.itemIndex}, parseInt(this.value) || 0)" class="w-20 bg-gray-700 text-center rounded-lg py-2 px-1 text-sm">
+                        <button onclick="updateWorkshopProgress('${tracked.workshopKey}', ${tracked.levelIndex}, ${tracked.itemIndex}, ${tracked.current + 1})" class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold text-xl">+</button>
+                      </div>
+                      <div class="text-sm text-gray-400">/ ${tracked.item.required.toLocaleString()}</div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `;
+        }
+      } else if (activeTab === 'quests') {
+        content.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            ${questItems.map((item, index) => {
+              const current = questProgress[index];
+              const percentage = (current / item.required) * 100;
+              const isComplete = current >= item.required;
+
+              return `
+                <div class="bg-gray-800 rounded-lg p-4 border-2 transition-all ${isComplete ? 'border-green-500 shadow-lg shadow-green-500/20' : 'border-gray-700 hover:border-cyan-500/50'}">
+                  <div class="flex items-start gap-3 mb-3">
+                    <div class="w-20 h-20 rounded-lg bg-gray-900 flex items-center justify-center flex-shrink-0 p-2 border border-gray-700">
+                      ${item.img ? `
+                        <img src="${item.img}" alt="${item.name}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="${getItemColor(item.name)} w-full h-full hidden items-center justify-center font-bold text-white text-xl rounded">
+                          ${getItemInitials(item.name)}
+                        </div>
+                      ` : `
+                        <div class="${getItemColor(item.name)} w-full h-full flex items-center justify-center font-bold text-white text-xl rounded">
+                          ${getItemInitials(item.name)}
+                        </div>
+                      `}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center justify-between gap-2">
+                        <h3 class="font-semibold text-lg truncate">${item.name}</h3>
+                        ${isComplete ? '<svg class="w-6 h-6 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
+                      <div class="h-full transition-all duration-300 ${isComplete ? 'bg-green-500' : 'bg-cyan-500'}" style="width: ${percentage}%"></div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                      <button onclick="updateQuestProgress(${index}, ${current - 1})" class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold text-xl">-</button>
+                      <input type="number" value="${current}" onchange="updateQuestProgress(${index}, parseInt(this.value) || 0)" class="w-20 bg-gray-700 text-center rounded-lg py-2 px-1 text-sm">
+                      <button onclick="updateQuestProgress(${index}, ${current + 1})" class="w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold text-xl">+</button>
+                    </div>
+                    <div class="text-sm text-gray-400">/ ${item.required.toLocaleString()}</div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      } else {
+        content.innerHTML = Object.entries(workshops).map(([key, workshop]) => {
+          if (workshop.levels.length === 0) return '';
+
+          return `
+            <div class="bg-gray-800 rounded-lg p-6 border-2 border-gray-700 mb-6">
+              <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="text-3xl">${workshop.icon}</span>
+                ${workshop.name}
+              </h2>
+
+              ${workshop.levels.map((level, levelIndex) => `
+                <div class="mb-6 last:mb-0">
+                  <h3 class="text-lg font-semibold mb-3 text-cyan-400">Level ${levelIndex + 1}</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    ${level.map((item, itemIndex) => {
+                      const current = getWorkshopItemProgress(key, levelIndex, itemIndex);
+                      const percentage = (current / item.required) * 100;
+                      const isComplete = current >= item.required;
+
+                      return `
+                        <div class="bg-gray-900 rounded-lg p-3 border ${isComplete ? 'border-green-500' : 'border-gray-700'}">
+                          <div class="flex items-start gap-2 mb-2">
+                            <div class="w-16 h-16 rounded bg-gray-800 flex items-center justify-center flex-shrink-0 p-1 border border-gray-700">
+                              ${item.img ? `
+                                <img src="${item.img}" alt="${item.name}" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="${getItemColor(item.name)} w-full h-full hidden items-center justify-center font-bold text-white text-sm rounded">
+                                  ${getItemInitials(item.name)}
+                                </div>
+                              ` : `
+                                <div class="${getItemColor(item.name)} w-full h-full flex items-center justify-center font-bold text-white text-sm rounded">
+                                  ${getItemInitials(item.name)}
+                                </div>
+                              `}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                              <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium truncate">${item.name}</span>
+                                <div class="flex items-center gap-1 flex-shrink-0">
+                                  <button onclick="toggleTrackedItem('${key}', ${levelIndex}, ${itemIndex})" class="text-lg ${isItemTracked(key, levelIndex, itemIndex) ? 'text-yellow-400' : 'text-gray-600 hover:text-yellow-400'}" title="${isItemTracked(key, levelIndex, itemIndex) ? 'Remove from tracking' : 'Add to tracking'}">
+                                    ${isItemTracked(key, levelIndex, itemIndex) ? '⭐' : '☆'}
+                                  </button>
+                                  ${isComplete ? '<svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="mb-2">
+                            <div class="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+                              <div class="h-full transition-all ${isComplete ? 'bg-green-500' : 'bg-cyan-500'}" style="width: ${percentage}%"></div>
+                            </div>
+                          </div>
+
+                          <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-1">
+                              <button onclick="updateWorkshopProgress('${key}', ${levelIndex}, ${itemIndex}, ${current - 1})" class="w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded text-sm">-</button>
+                              <input type="number" value="${current}" onchange="updateWorkshopProgress('${key}', ${levelIndex}, ${itemIndex}, parseInt(this.value) || 0)" class="w-16 bg-gray-700 text-center rounded py-1 text-xs">
+                              <button onclick="updateWorkshopProgress('${key}', ${levelIndex}, ${itemIndex}, ${current + 1})" class="w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded text-sm">+</button>
+                            </div>
+                            <span class="text-xs text-gray-400">/ ${item.required.toLocaleString()}</span>
+                          </div>
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }).join('');
+      }
+      
+      if (shouldRestoreFocus && activeTab === 'crafting') {
+        setTimeout(() => {
+          const searchInput = document.querySelector('input[placeholder*="Search"]');
+          if (searchInput) {
+            searchInput.focus();
+            searchInput.setSelectionRange(searchInput.value.length, searchInput.value.length);
+          }
+          window.scrollTo(0, lastScrollPosition);
+        }, 0);
+      } else {
+        setTimeout(() => {
+          window.scrollTo(0, lastScrollPosition);
+        }, 0);
+      }
+    }
+
+    render();
+  </script>
+</body>
+</html>
